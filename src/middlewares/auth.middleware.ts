@@ -38,7 +38,7 @@ export class AuthGuard implements CanActivate {
       }
 
       const userPermissions = user.permissionCodes;
-      console.log(userPermissions)
+      //console.log(userPermissions)
       const hasAllPermissions = permissions.every((permission) => userPermissions.includes(permission));
 
       if (!hasAllPermissions){
