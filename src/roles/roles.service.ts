@@ -60,4 +60,12 @@ export class RolesService {
         }
         return this.roleRepository.save(role);
     }
+
+    async removePermission(id:number, permissionId:number): Promise<{message: string}> {
+        const role = await this.findById(id);
+        await this.permissionsService.findById(permissionId);
+        role.permissions = role.permissions.filter(permission => permission.id !== permissionId);
+        await this.roleRepository.save(role);
+        return {message: 'Permiso eliminado'};
+    }
 }

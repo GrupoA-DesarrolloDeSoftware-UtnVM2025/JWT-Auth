@@ -45,4 +45,9 @@ export class RolesController {
         return this.rolesService.assignPermissions(id, assignPermissionDto);
     }
 
+    @Delete(':id/remove-permission/:permissionId')
+    removePermission(@Param('id') id: number, @Param('permissionId') permissionId: number): Promise<{message: string}> {
+        return this.rolesService.removePermission(id, permissionId);
+    }
+
 }
