@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -58,6 +58,11 @@ export class UsersController {
   @Post(':id/assign-roles')
   assignRole(@Param('id') id: number, @Body() assignRoleDto: AssignRoleDto) {
     return this.service.assignRoles(id, assignRoleDto);
+  }
+
+  @Delete(':id/remove-role/:roleId')
+  removeRole(@Param('id') id: number, @Param('roleId') roleId: number) {
+    return this.service.removeRole(id, roleId);
   }
 
   @Get(':id')

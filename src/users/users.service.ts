@@ -77,6 +77,18 @@ export class UsersService {
     return await this.repository.save(user);
   }
 
+  async removeRole(id:number, roleId:number): Promise<{message: string}> {
+    const user = await this.findById(id);
+
+    await this.rolesService.findById(roleId);
+
+    user.roles = user.roles.filter(role => role.id !== roleId);
+
+    await this.repository.save(user);
+
+    return {message: 'Rol eliminado'};
+  }
+
   async findById(id: number): Promise<UserEntity> {
     const user = this.repository.findOne({where: {id}, relations: ["roles","roles.permissions"], select: ["id", "email", "roles"]});
     if(!user) {
