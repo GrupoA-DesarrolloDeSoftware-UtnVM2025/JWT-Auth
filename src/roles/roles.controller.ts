@@ -11,41 +11,48 @@ export class RolesController {
     constructor(private readonly rolesService: RolesService) {}
 
     @UseGuards(AuthGuard)
+    @Permissions(['role_create'])
     @Post()
     create(@Body() createRoleDto: CreateRoleDto): Promise<RoleEntity> {
         return this.rolesService.create(createRoleDto);
     }
 
     @UseGuards(AuthGuard)
+    @Permissions(['role_reader'])
     @Get('all')
     findAll(): Promise<RoleEntity[]> {
         return this.rolesService.findAll();
     }
 
     @UseGuards(AuthGuard)
+    @Permissions(['role_reader'])
     @Get(':id')
     findById(@Param('id') id: number): Promise<RoleEntity> {
         return this.rolesService.findById(id);
     }
 
     @UseGuards(AuthGuard)
+    @Permissions(['role_editor'])
     @Put(':id')
     update(@Param('id') id: number, @Body() createRoleDto: CreateRoleDto): Promise<RoleEntity> {
         return this.rolesService.update(id, createRoleDto);
     }
 
     @UseGuards(AuthGuard)
+    @Permissions(['role_delete'])
     @Delete(':id')
     delete(@Param('id') id: number): Promise<{ message: string }> {
         return this.rolesService.delete(id);
     }
 
     @Post(':id/assign-permissions')
+    @Permissions(['permission_role_assignment'])
     assignPermissions(@Param('id') id: number, @Body() assignPermissionDto: AssignPermissionsDto ): Promise<RoleEntity> {
         return this.rolesService.assignPermissions(id, assignPermissionDto);
     }
 
     @Delete(':id/remove-permission/:permissionId')
+    @Permissions(['permission_role_assignment'])
     removePermission(@Param('id') id: number, @Param('permissionId') permissionId: number): Promise<{message: string}> {
         return this.rolesService.removePermission(id, permissionId);
     }

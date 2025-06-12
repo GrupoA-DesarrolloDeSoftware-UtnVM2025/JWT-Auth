@@ -55,11 +55,15 @@ export class UsersController {
     );
   }
 
+  @UseGuards(AuthGuard)
+  @Permissions(['user_role_assignment'])
   @Post(':id/assign-roles')
   assignRole(@Param('id') id: number, @Body() assignRoleDto: AssignRoleDto) {
     return this.service.assignRoles(id, assignRoleDto);
   }
 
+  @UseGuards(AuthGuard)
+  @Permissions(['user_role_assignment'])
   @Delete(':id/remove-role/:roleId')
   removeRole(@Param('id') id: number, @Param('roleId') roleId: number) {
     return this.service.removeRole(id, roleId);
@@ -67,7 +71,7 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  @Permissions(['test2'])
+  @Permissions(['user_reader'])
   findById(@Param('id') id:number): Promise<UserEntity> {
     return this.service.findById(id);
   }
