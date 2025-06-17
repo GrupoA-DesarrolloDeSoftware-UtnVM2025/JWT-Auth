@@ -1,6 +1,6 @@
 import {
   CanActivate,
-  ExecutionContext,
+  ExecutionContext, ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -42,13 +42,19 @@ export class AuthGuard implements CanActivate {
       const hasAllPermissions = permissions.every((permission) => userPermissions.includes(permission));
 
       if (!hasAllPermissions){
-        throw new UnauthorizedException("Insufficent permissions");
+        throw new ForbiddenException("Insufficent permissions");
       }
 
       return true;
 
     } catch (error) {
-      throw new UnauthorizedException(error?.message);
+      if (error instanceof ForbiddenException) {
+        throw new ForbiddenException(error.message);
+      } else if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException(error.message);
+      } else {
+        throw new UnauthorizedException('An unexpected error occurred.');
+      }
     }
   }
 }
